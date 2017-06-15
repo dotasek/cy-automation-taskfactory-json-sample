@@ -1,4 +1,4 @@
-package org.cytoscape.automation.taskfactory.internal;
+package org.cytoscape.automation.taskfactory_json.internal;
 
 
 import org.osgi.framework.BundleContext;
@@ -27,35 +27,20 @@ public class CyActivator extends AbstractCyActivator {
 
 	public void start(BundleContext bc) throws InvalidSyntaxException 
 	{
-		String returnAValueDescription = "Add two numbers (a and b) and return their value using ObservableTask.";
+		String returnAValueDescription = "Return a JSON object";
 		
 		Properties returnAValueTaskFactoryProperties = new Properties();
 		returnAValueTaskFactoryProperties.setProperty(COMMAND_NAMESPACE, SAMPLE_COMMAND_NAMESPACE);
-		returnAValueTaskFactoryProperties.setProperty(COMMAND, "return_a_value");
+		returnAValueTaskFactoryProperties.setProperty(COMMAND, "return_json");
 		returnAValueTaskFactoryProperties.setProperty(COMMAND_DESCRIPTION,  returnAValueDescription);
 		returnAValueTaskFactoryProperties.setProperty(PREFERRED_MENU, "Sample App");
 		returnAValueTaskFactoryProperties.setProperty(IN_MENU_BAR, "true");
 		returnAValueTaskFactoryProperties.setProperty(IN_CONTEXT_MENU, "false");
-		returnAValueTaskFactoryProperties.setProperty("title", "Return a Value");
+		returnAValueTaskFactoryProperties.setProperty("title", "Return a JSON Value");
 		returnAValueTaskFactoryProperties.setProperty(TOOLTIP,  returnAValueDescription);
 
-		TaskFactory returnAValueTaskFactory = new ReturnAValueTaskFactory();
+		TaskFactory returnAValueTaskFactory = new ReturnJSONTaskFactory();
 		registerAllServices(bc, returnAValueTaskFactory, returnAValueTaskFactoryProperties);
-
-		String sayHelloDescription = "Say hello to the someone by name using the Task Monitor.";
-		
-		Properties sayHelloTaskFactoryProperties = new Properties();
-		sayHelloTaskFactoryProperties.setProperty(COMMAND_NAMESPACE, SAMPLE_COMMAND_NAMESPACE);
-		sayHelloTaskFactoryProperties.setProperty(COMMAND, "say_hello");
-		sayHelloTaskFactoryProperties.setProperty(COMMAND_DESCRIPTION, sayHelloDescription);
-		sayHelloTaskFactoryProperties.setProperty(PREFERRED_MENU, "Sample App");
-		sayHelloTaskFactoryProperties.setProperty(IN_MENU_BAR, "true");
-		sayHelloTaskFactoryProperties.setProperty(IN_CONTEXT_MENU, "false");
-		sayHelloTaskFactoryProperties.setProperty("title", "Say Hello");
-
-		TaskFactory pauseCommandFactory = new SayHelloTaskFactory();
-		registerAllServices(bc, pauseCommandFactory, sayHelloTaskFactoryProperties);
-
 	}
 }
 
