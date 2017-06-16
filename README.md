@@ -17,7 +17,7 @@ It is recommended to be familiar with concepts in [Cytoscape 3.0 App Development
 
 The ```getResults(Class<?>)``` method in ```ReturnJSONTask``` returns an instance of ```SampleJSONResult```, as shown below:
 
-```
+```java
 public <R> R getResults(Class<? extends R> type) {
 		...
         if (type.equals(JSONResult.class)) {
@@ -31,7 +31,7 @@ public <R> R getResults(Class<? extends R> type) {
 
 ```SampleResult``` is a very simple Java class, which consists of nothing but public fields.
 
-```
+```java
 public class SampleResult {
 	public String name;
 	public List<Integer> values;
@@ -57,7 +57,36 @@ Classes of this type are very easily translated into JSON by libraries such as G
 }
 ```
 
+```SampleJSONResult``` performs such a translation using the following code:
+
+```java
+public String getJSON() {
+	Gson gson = new Gson();
+	return gson.toJson(result);
+}
+```
+
+Additional details regarding the implementation of these classes are contained in comments in the sample code.
+
 ### Implementing ResultDescriptor
+
+Once a ```JSONResult``` implementation is created, Cytoscape needs a way to recognize that ```ReturnJSONTask``` can provide it as a result. The ```ObservableTask``` interface includes the ```getResultDescriptor()``` method to achieve this. A default implementation is provided in the interface, but this returns ```null```.
+
+```ReturnJSONTask```s implementation of this method returns an instance of ```SampleResultDescriptor```, which lists the result types, including ```JSONResult``` returned through the following code:
+
+```java
+public List<Class<?>> getResultTypes() {
+	return Collections.unmodifiableList(Arrays.asList(String.class, SampleResult.class, JSONResult.class));
+}
+```
+
+In addition, ```SampleResultDescriptor``` also provides example outputs for each of the returned Types, which can be used to generate Swagger documentation. Additional details regarding the implementation of these classes are contained in comments in the sample code.
+
+## Accessing JSON through automation
+
+Using the path ```POST /v1/commands/sample_app/return_json``` you can examine the output of ```ReturnJSONTask``` through some of the methods defined in [Accessing Automation](https://github.com/cytoscape/cytoscape-automation/blob/master/for-app-developers/accessing_automation.md).
+
+In addition, basic python integration tests are included as sample code in the ```python_tests``` directory.
 
 ## Next Steps
 
