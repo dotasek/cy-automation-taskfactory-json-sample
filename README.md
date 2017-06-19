@@ -84,7 +84,7 @@ In addition, ```SampleResultDescriptor``` also provides example outputs for each
 
 ## Accessing JSON through automation
 
-Using the path ```POST /v1/commands/sample_app/return_json``` you can examine the output of ```ReturnJSONTask``` through some of the methods defined in [Accessing Automation](https://github.com/cytoscape/cytoscape-automation/blob/master/for-app-developers/accessing_automation.md).
+Using the path ```POST /v1/commands/sample_app/return_json``` you can examine the output of ```ReturnJSONTask``` through some of the methods defined in [Accessing Automation](https://github.com/cytoscape/cytoscape-automation/wiki/Accessing-Automation).
 
 In addition, basic python integration tests are included as sample code in the ```python_tests``` directory.
 
