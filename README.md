@@ -19,12 +19,12 @@ The ```getResults(Class<?>)``` method in ```ReturnJSONTask``` returns an instanc
 
 ```java
 public <R> R getResults(Class<? extends R> type) {
-		...
+	...
         if (type.equals(JSONResult.class)) {
-			return (R) new SampleJSONResult(result);
-		}
-        ...
+		return (R) new SampleJSONResult(result);
 	}
+        ...
+}
 ```
 
 ```SampleJSONResult``` is responsible for transforming the contents of an instance of ```SampleResult``` into JSON.
