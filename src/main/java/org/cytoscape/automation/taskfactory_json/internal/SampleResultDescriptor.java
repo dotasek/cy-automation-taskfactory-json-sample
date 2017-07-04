@@ -38,6 +38,4 @@ public class SampleResultDescriptor implements ResultDescriptor {
 		}
 		return null;
 	}
-
-
 }
