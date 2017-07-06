@@ -12,6 +12,7 @@ public class SampleJSONResult implements JSONResult{
 		this.result = result;
 	}
 	
+	@ExampleJSONString(value="")
 	@Override
 	public String getJSON() {
 		Gson gson = new Gson();

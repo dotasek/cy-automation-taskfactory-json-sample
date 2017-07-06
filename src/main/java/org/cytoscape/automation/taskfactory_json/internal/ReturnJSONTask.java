@@ -8,7 +8,6 @@ import org.cytoscape.work.ProvidesTitle;
 import org.cytoscape.work.TaskMonitor;
 import org.cytoscape.work.Tunable;
 import org.cytoscape.work.json.JSONResult;
-import org.cytoscape.work.ResultDescriptor;
 
 public class ReturnJSONTask extends AbstractTask implements ObservableTask {
 	
@@ -34,13 +33,9 @@ public class ReturnJSONTask extends AbstractTask implements ObservableTask {
 		result.values.add(3);
 	}
 	
-	@Override
-	public ResultDescriptor getResultDescriptor() {
-		return new SampleResultDescriptor();
-	}
-	
 	@SuppressWarnings("unchecked")
 	@Override
+	@ResultClasses(classes={String.class, SampleResult.class, JSONResult.class})
 	public <R> R getResults(Class<? extends R> type) {
 		if (type.equals(String.class)) {
 			return (R) new SampleJSONResult(result).getJSON();
