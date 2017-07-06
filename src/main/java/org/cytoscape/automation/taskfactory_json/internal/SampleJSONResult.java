@@ -12,7 +12,7 @@ public class SampleJSONResult implements JSONResult{
 		this.result = result;
 	}
 	
-	@ExampleJSONString(value="")
+	@ExampleJSONString(value="{\"name\"=\"Chuck\", \"values\"={1,2,3}}")
 	@Override
 	public String getJSON() {
 		Gson gson = new Gson();
