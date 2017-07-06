@@ -35,13 +35,13 @@ public class ReturnJSONTask extends AbstractTask implements ObservableTask {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	@ResultClasses(classes={String.class, SampleResult.class, JSONResult.class})
+	@ResultClasses(classes={String.class, SampleResult.class, SampleJSONResult.class})
 	public <R> R getResults(Class<? extends R> type) {
 		if (type.equals(String.class)) {
 			return (R) new SampleJSONResult(result).getJSON();
 		} else if (type.equals(SampleResult.class)) { //Since SampleResult isn't exported from this bundle, this is only useful in-app, and shouldn't be accessed from other apps.
 			return (R) result;
-		} else if (type.equals(JSONResult.class)) {
+		} else if (type.isAssignableFrom(JSONResult.class)) {
 			return (R) new SampleJSONResult(result);
 		} else {
 			return null;
