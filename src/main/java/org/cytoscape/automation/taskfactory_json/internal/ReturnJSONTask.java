@@ -42,7 +42,7 @@ public class ReturnJSONTask extends AbstractTask implements ObservableTask {
 			return (R) new SampleJSONResult(result).getJSON();
 		} else if (type.equals(SampleResult.class)) { //Since SampleResult isn't exported from this bundle, this is only useful in-app, and shouldn't be accessed from other apps.
 			return (R) result;
-		} else if (type.isAssignableFrom(JSONResult.class)) {
+		} else if (type.isAssignableFrom(SampleJSONResult.class)) {
 			return (R) new SampleJSONResult(result);
 		} else {
 			return null;
