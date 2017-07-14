@@ -1,6 +1,6 @@
 # TaskFactory JSON Result Sample
 
-__This Sample App uses Cytoscape 3.6.0-SNAPSHOT API bundles. Until the release of Cytoscape 3.6, this App will ONLY work if you are building the develop branch of Cytoscape yourself.__
+__This Sample App uses Cytoscape 3.6.0-SNAPSHOT API bundles. Until the release of Cytoscape 3.6, this App will ONLY work if you are building the develop branch of Cytoscape yourself, as well as using the develop branch of the CyREST plugin.__
 
 This sample creates a TaskFactory instance that provides JSON results. When added to the OSGi context, this TaskFactory can then be executed outside of Cytoscape through REST, and it's JSON result can be extracted.
 
@@ -10,28 +10,15 @@ It is recommended to be familiar with concepts in [Cytoscape 3.0 App Development
 
 ## Producting JSON Output from Tasks
 
-```ReturnJSONTask``` implements ```ObservableTask``` to produce JSON output. To do this, it satisfies two primary requirements:
+Commands implementing the ```ObservableTask``` method can return various classes of object after completing via the ```<R> R getResults(Class<? extends R> type)``` method. The is discussed in detail in the [Producing Output from Tasks](https://github.com/cytoscape/cytoscape-automation/tree/master/for-app-developers/cy-automation-taskfactory-sample#producing-output-from-tasks) section of the TaskFactory Sample App.
 
-1. The ```getResults(Class<?>)``` method recognizes the ```JSONResult``` class, and returns a ```JSONResult``` object. 
-2. The ```getResultDescriptor()``` method returns a ```ResultDescriptor``` implementation that exposes the classes of objects that the ```getResults(Class<?>)``` method is capable of returning.
+JSON output is generally accessed via CyREST, which first needs to know that a Task is capable of providing it, and then needs a means to access it. This is done via returning implementations of the ```org.cytoscape.work.json.JSONResult``` interface.
 
 ### Implementing JSONResult
 
-The ```getResults(Class<?>)``` method in ```ReturnJSONTask``` returns an instance of ```SampleJSONResult```, as shown below:
+```SampleJSONResult``` is responsible for providing JSON output. It provides a JSON String via its ```getJSON()``` method by transforming the contents of an instance of ```SampleResult``` into JSON.
 
-```java
-public <R> R getResults(Class<? extends R> type) {
-	...
-        if (type.equals(JSONResult.class)) {
-		return (R) new SampleJSONResult(result);
-	}
-        ...
-}
-```
-
-```SampleJSONResult``` is responsible for transforming the contents of an instance of ```SampleResult``` into JSON.
-
-```SampleResult``` is a very simple Java class, which consists of nothing but public fields.
+```SampleResult``` is a very simple Java class, called a POJO, which consists of nothing but public fields.
 
 ```java
 public class SampleResult {
@@ -59,7 +46,7 @@ Classes of this type are very easily translated into JSON by libraries such as G
 }
 ```
 
-```SampleJSONResult``` performs such a translation using the following code:
+```SampleJSONResult``` performs a translation of ```SampleResult``` in a JSON String using GSON. It does so in the code snippet below:
 
 ```java
 public String getJSON() {
@@ -70,19 +57,9 @@ public String getJSON() {
 
 Additional details regarding the implementation of these classes are contained in comments in the sample code.
 
-### Implementing ResultDescriptor
+### Returning SampleJSONResult in a Task
 
-Once a ```JSONResult``` implementation is created, Cytoscape needs a way to recognize that ```ReturnJSONTask``` can provide it as a result. The ```ObservableTask``` interface includes the ```getResultDescriptor()``` method to achieve this. A default implementation is provided in the interface, but this returns ```null```.
-
-```ReturnJSONTask```s implementation of this method returns an instance of ```SampleResultDescriptor```, which lists the result types, including ```JSONResult``` returned through the following code:
-
-```java
-public List<Class<?>> getResultTypes() {
-	return Collections.unmodifiableList(Arrays.asList(String.class, SampleResult.class, JSONResult.class));
-}
-```
-
-In addition, ```SampleResultDescriptor``` also provides example outputs for each of the returned Types, which can be used to generate Swagger documentation. Additional details regarding the implementation of these classes are contained in comments in the sample code.
+The class 
 
 ## Accessing JSON through automation
 
