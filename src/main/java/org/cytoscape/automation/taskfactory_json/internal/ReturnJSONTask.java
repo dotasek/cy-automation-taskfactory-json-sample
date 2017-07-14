@@ -9,7 +9,6 @@ import org.cytoscape.work.ObservableTask;
 import org.cytoscape.work.ProvidesTitle;
 import org.cytoscape.work.TaskMonitor;
 import org.cytoscape.work.Tunable;
-import org.cytoscape.work.json.JSONResult;
 
 public class ReturnJSONTask extends AbstractTask implements ObservableTask {
 	
@@ -40,9 +39,10 @@ public class ReturnJSONTask extends AbstractTask implements ObservableTask {
 	public <R> R getResults(Class<? extends R> type) {
 		if (type.equals(String.class)) {
 			return (R) new SampleJSONResult(result).getJSON();
-		} else if (type.equals(SampleResult.class)) { //Since SampleResult isn't exported from this bundle, this is only useful in-app, and shouldn't be accessed from other apps.
-			return (R) result;
-		} else if (type.isAssignableFrom(SampleJSONResult.class)) {
+		} 
+		/* This is where we return JSON from this Task. 
+		 */
+		else if (type.equals(SampleJSONResult.class)) {
 			return (R) new SampleJSONResult(result);
 		} else {
 			return null;
