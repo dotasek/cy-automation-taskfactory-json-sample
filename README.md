@@ -12,13 +12,15 @@ It is recommended to be familiar with concepts in [Cytoscape 3.0 App Development
 
 Commands implementing the ```ObservableTask``` method can return various classes of object after completing via the ```<R> R getResults(Class<? extends R> type)``` method. The is discussed in detail in the [Producing Output from Tasks](https://github.com/cytoscape/cytoscape-automation/tree/master/for-app-developers/cy-automation-taskfactory-sample#producing-output-from-tasks) section of the TaskFactory Sample App.
 
-JSON output is generally accessed via CyREST, which first needs to know that a Task is capable of providing it, and then needs a means to access it. This is done via returning implementations of the ```org.cytoscape.work.json.JSONResult``` interface.
+JSON output form Commands can be accessed via CyREST, which first needs to know that a Task is capable of providing it, and then needs a means to access it. This is done via returning implementations of the ```org.cytoscape.work.json.JSONResult``` interface.
+
+This sample app implements JSONResult with a class called ```SampleJSONResult``` and then returns ```SampleJSONResult``` from the task ```ReturnJSONTask```.
 
 ### Implementing JSONResult
 
-```SampleJSONResult``` is responsible for providing JSON output. It provides a JSON String via its ```getJSON()``` method by transforming the contents of an instance of ```SampleResult``` into JSON.
+```SampleJSONResult``` is responsible for providing our command's JSON output. It provides a JSON String via its ```getJSON()``` method by transforming the contents of an instance of ```SampleResult``` into JSON.
 
-```SampleResult``` is a very simple Java class, called a POJO, which consists of nothing but public fields.
+```SampleResult``` is a very simple Java class, known as a POJO (Plain Old Java Object), which consists of nothing but public fields.
 
 ```java
 public class SampleResult {
@@ -26,7 +28,7 @@ public class SampleResult {
 	public List<Integer> values;
 }
 ```
-Classes of this type are very easily translated into JSON by libraries such as GSON or Jackson. An example of the JSON produced by an instance of this class can look like the following:
+Classes of this type are very easy to translate into JSON by libraries such as GSON or Jackson. An example of the JSON produced by an instance of this class can look like the following:
 
 ```json
 {
@@ -59,7 +61,26 @@ Additional details regarding the implementation of these classes are contained i
 
 ### Returning SampleJSONResult in a Task
 
-The class 
+The class ```ReturnJSONTask``` is responsible for providing ```SampleJSONresult``` to CyREST through it's ```getResults(Class<? extends R> type)``` method. The code snippet below demonstrates:
+
+```java
+public <R> R getResults(Class<? extends R> type) {
+   if 
+   ...
+   else if (type.equals(SampleJSONResult.class)) {
+       return (R) new SampleJSONResult(result);
+   } 
+   ...
+}
+```
+
+This alone will does not provide enough information for CyREST to access the ```SampleJSONResult``` output. CyREST needs to be aware that ```ReturnJSONTask``` has a ```JSONResult``` implementation available to return. To allow this, we return all the classes that ```ReturnJSONTask``` can provide in the response of ```getResultClasses()```. The code snippet below demonstrates:
+
+```java
+public List<Class<?>> getResultClasses() {
+	return Arrays.asList(String.class, SampleJSONResult.class);
+}
+```
 
 ## Accessing JSON through automation
 
