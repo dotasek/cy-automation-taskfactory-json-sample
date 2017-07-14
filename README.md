@@ -86,7 +86,35 @@ public List<Class<?>> getResultClasses() {
 
 Using the path ```POST /v1/commands/sample_app/return_json``` you can examine the output of ```ReturnJSONTask``` through some of the methods defined in [Accessing Automation](https://github.com/cytoscape/cytoscape-automation/wiki/App-Developers:-Accessing-Automation).
 
-In addition, basic python integration tests are included as sample code in the ```python_tests``` directory.
+After executing the command, you can examine the JSON it has produced. Details about how it is presented are contained below.
+
+### CIResponse Wrapping
+
+Any JSON returned by a Command is contained in the data field of a CIResponse wrapper. The JSON produced by ```SampleJSONResult``` can be seen in this CIResponse returned by this sample app:
+
+```json
+{
+  "data": {
+    "results": [
+      {
+        "name": "Jake",
+        "values": [
+          1,
+          2,
+          3
+        ]
+      }
+    ]
+  },
+  "errors": []
+}
+```
+
+Details about CIResponse and how it fits in with Cytoscape Automation, see the [Data Models section of the Cytoscape Best Practices Wiki Page](https://github.com/cytoscape/cytoscape-automation/wiki/App-Developers:-Cytoscape-Function-Best-Practices#data-models)
+
+## Integration Testing
+
+Basic python integration tests are included as sample code in the ```python_tests``` directory.
 
 ## Next Steps
 
